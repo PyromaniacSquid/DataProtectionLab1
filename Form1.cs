@@ -15,6 +15,7 @@ namespace WinFormsApp1
     {
         string path = "users.dat";
         string log_path = "log.txt";
+        bool admin_launch = false;
         Dictionary<string, string> user_map = new Dictionary<string, string>();
         StreamWriter logStream;
         private void GetUserData()
@@ -49,7 +50,11 @@ namespace WinFormsApp1
             GetUserData();
             logStream.WriteLine("Сбор информации о пользователях завершен.");
             logStream.WriteLine("Найдено пользователей: " + user_map.Count);
-            
+            if (user_map.Count == 0)
+            {
+                UsernameInput.Text = "admin";
+
+            }
         }
 
         private void UsernameLabel_Click(object sender, EventArgs e)
