@@ -1,0 +1,17 @@
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.exe
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.deps.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.runtimeconfig.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.runtimeconfig.dev.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.dll
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.pdb
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.csproj.AssemblyReference.cache
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.ChangePasswordForm.resources
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.LoginForm.resources
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.csproj.GenerateResource.cache
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.GeneratedMSBuildEditorConfig.editorconfig
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.AssemblyInfoInputs.cache
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.AssemblyInfo.cs
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.csproj.CoreCompileInputs.cache
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.dll
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.pdb
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.genruntimeconfig.cache
