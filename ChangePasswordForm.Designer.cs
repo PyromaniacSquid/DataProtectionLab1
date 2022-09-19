@@ -36,12 +36,14 @@ namespace WinFormsApp1
             this.SaveButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.TextLabel = new System.Windows.Forms.Label();
+            this.OldPasswordLabel = new System.Windows.Forms.Label();
+            this.OldPasswordBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // ConfirmPasswordLabel
             // 
             this.ConfirmPasswordLabel.AutoSize = true;
-            this.ConfirmPasswordLabel.Location = new System.Drawing.Point(25, 106);
+            this.ConfirmPasswordLabel.Location = new System.Drawing.Point(26, 134);
             this.ConfirmPasswordLabel.Name = "ConfirmPasswordLabel";
             this.ConfirmPasswordLabel.Size = new System.Drawing.Size(123, 15);
             this.ConfirmPasswordLabel.TabIndex = 0;
@@ -50,7 +52,7 @@ namespace WinFormsApp1
             // PasswordLabel
             // 
             this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.Location = new System.Drawing.Point(57, 66);
+            this.PasswordLabel.Location = new System.Drawing.Point(57, 99);
             this.PasswordLabel.Name = "PasswordLabel";
             this.PasswordLabel.Size = new System.Drawing.Size(91, 15);
             this.PasswordLabel.TabIndex = 1;
@@ -58,16 +60,16 @@ namespace WinFormsApp1
             // 
             // ConfirmPasswordInput
             // 
-            this.ConfirmPasswordInput.Location = new System.Drawing.Point(170, 103);
+            this.ConfirmPasswordInput.Location = new System.Drawing.Point(170, 131);
             this.ConfirmPasswordInput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ConfirmPasswordInput.Name = "ConfirmPasswordInput";
             this.ConfirmPasswordInput.PasswordChar = '*';
             this.ConfirmPasswordInput.Size = new System.Drawing.Size(110, 23);
-            this.ConfirmPasswordInput.TabIndex = 2;
+            this.ConfirmPasswordInput.TabIndex = 4;
             // 
             // NewPasswordInput
             // 
-            this.NewPasswordInput.Location = new System.Drawing.Point(170, 63);
+            this.NewPasswordInput.Location = new System.Drawing.Point(170, 96);
             this.NewPasswordInput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.NewPasswordInput.Name = "NewPasswordInput";
             this.NewPasswordInput.PasswordChar = '*';
@@ -76,22 +78,22 @@ namespace WinFormsApp1
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(66, 146);
+            this.SaveButton.Location = new System.Drawing.Point(66, 174);
             this.SaveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(82, 22);
-            this.SaveButton.TabIndex = 4;
+            this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "Сохранить";
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(181, 146);
+            this.CancelButton.Location = new System.Drawing.Point(181, 174);
             this.CancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(82, 22);
-            this.CancelButton.TabIndex = 5;
+            this.CancelButton.TabIndex = 6;
             this.CancelButton.Text = "Отмена";
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -105,11 +107,31 @@ namespace WinFormsApp1
             this.TextLabel.Text = "Пожалуйста, установите новый пароль для указанного пользователя";
             this.TextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // OldPasswordLabel
+            // 
+            this.OldPasswordLabel.AutoSize = true;
+            this.OldPasswordLabel.Location = new System.Drawing.Point(57, 62);
+            this.OldPasswordLabel.Name = "OldPasswordLabel";
+            this.OldPasswordLabel.Size = new System.Drawing.Size(92, 15);
+            this.OldPasswordLabel.TabIndex = 7;
+            this.OldPasswordLabel.Text = "Старый пароль";
+            // 
+            // OldPasswordBox
+            // 
+            this.OldPasswordBox.Location = new System.Drawing.Point(170, 59);
+            this.OldPasswordBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.OldPasswordBox.Name = "OldPasswordBox";
+            this.OldPasswordBox.PasswordChar = '*';
+            this.OldPasswordBox.Size = new System.Drawing.Size(110, 23);
+            this.OldPasswordBox.TabIndex = 2;
+            // 
             // ChangePasswordForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 185);
+            this.ClientSize = new System.Drawing.Size(313, 216);
+            this.Controls.Add(this.OldPasswordBox);
+            this.Controls.Add(this.OldPasswordLabel);
             this.Controls.Add(this.TextLabel);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.SaveButton);
@@ -134,5 +156,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Label TextLabel;
+        private System.Windows.Forms.Label OldPasswordLabel;
+        private System.Windows.Forms.TextBox OldPasswordBox;
     }
 }

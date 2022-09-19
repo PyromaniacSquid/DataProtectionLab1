@@ -15,23 +15,43 @@ namespace WinFormsApp1
     {
         public class User
         {
-            public byte[] username;
-            public byte[] password;
-            public bool blocked;
-            public bool hasRestrictions;
+            private string username;
+            private string password;
+            private bool blocked;
+            private bool hasRestrictions;
             public User()
             {
-                username = new byte[128];
-                password = new byte[128];
+                username = "";
+                password = "";
                 blocked = false;
                 hasRestrictions = true;
             }
             public User(string username, string password, bool blocked, bool hasRestrictions)
             {
-                this.username = Encoding.Unicode.GetBytes(username);
-                this.password = Encoding.Unicode.GetBytes(password);
+                this.username = username;
+                this.password = password;
                 this.blocked = blocked;
                 this.hasRestrictions = hasRestrictions;
+            }
+            public string Username
+            {
+                get { return username; }
+                set { username = value; }
+            }
+            public string Password
+            {
+                get { return password; }
+                set { password = value; }
+            }
+            public bool isBlocked
+            {
+                get { return blocked; }
+                set { blocked = value; }
+            }
+            public bool hasPasswordRestrictions
+            {
+                get { return hasRestrictions; }
+                set { hasRestrictions = value; }
             }
         }
         int initial_user_count = 0;
@@ -40,133 +60,124 @@ namespace WinFormsApp1
         public Dictionary<string, User> user_map = new Dictionary<string, User>();
         StreamWriter logStream;
 
-        User activeUser;
+        public User activeUser;
 
         public void LogOutput(string message)
         {
             logStream.WriteLine(DateTime.Now + " " + message);
         }
         
-        byte[] SafeRead(FileStream fs, int offset, int len)
+        private void SaveUserData()
         {
-            byte[] buffer = new byte[128];
-            int bytes_read = fs.Read(buffer, offset, 128);
-            if (bytes_read == 0)
+            LogOutput("Сохраняю изменения");
+            File.Delete(path);
+            FileStream user_fs = File.Create(path);
+            BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode);
+            foreach (KeyValuePair<string, User> user_pair in user_map)
             {
-                LogOutput("Ничего не считано, т.к. недостаточно байт в источнике");
+                User cur_user = user_pair.Value;
+                writer.Write(cur_user.Username);
+                writer.Write(cur_user.Password);
+                writer.Write(cur_user.isBlocked);
+                writer.Write(cur_user.hasPasswordRestrictions);
             }
-            return buffer;
+            LogOutput("Изменения сохранены");
+            writer.Close();
+            user_fs.Close();
         }
 
-
-        public void ChangePassword(string user, string password)
+        public void ChangePassword(string username, string password)
         {
-            User cur_user = user_map[user];
-            cur_user.password = new byte[128];
-            Encoding.Unicode.GetBytes(password).CopyTo(cur_user.password, 0);
-            //cur_user.password = Encoding.Unicode.GetBytes(password);
-            user_map[user] = cur_user;
-
+            user_map[username].Password = password;
+           
+            /*
+            LogOutput("Открываю бинарный файл с записями");
             FileStream user_fs = File.Open(path, FileMode.Open);
-            // Search in binary file the location of user's password
-            // Since every record is 128+128+2+2 = 260 bytes, check first 128 and jump 260 ahead if it's not the one;
-            byte[] buffer = new byte[128];
-            int offset = 0;
-            user_fs.Read(buffer, 0, 128);
-            string username = Encoding.Unicode.GetString(buffer);
-            username = username.Remove(username.IndexOf('\0'));
-            while (username != user)
+            BinaryReader reader = new BinaryReader(user_fs, Encoding.Unicode);
+            LogOutput("Файл открыт");
+
+            string cur_username = reader.ReadString();
+            while (cur_username != username)
             {
-                user_fs.Seek(132, SeekOrigin.Current);
-                user_fs.Read(buffer, 0, 128);
+                // Flush stream
+                reader.ReadString(); // we're unsure on length so just skip password string
+                reader.BaseStream.Seek(4, SeekOrigin.Current); // skip 4 bytes of boolean variables
+                cur_username = reader.ReadString();
             }
-            user_fs.Write(Encoding.Unicode.GetBytes(password), 0, 128);
+            // Now we're in position, start writing
+            BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode);
+            writer.BaseStream.
+            writer.Write(password);
+            writer.Close();
             user_fs.Close();
+            */
+            LogOutput("Изменен пароль пользователя " + username);
+        }
+        public void AddUserData(string username, string password, bool blocked, bool hasRestrictions)
+        {
+
+            user_map[username] = new User(username, password, blocked, hasRestrictions);
+            /*
+            LogOutput("Открываю бинарный файл с записями");
+            FileStream user_fs = File.Open(path, FileMode.Append);
+            LogOutput("Файл открыт");
+
+            BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode);
+            writer.Write(username);
+            writer.Write(password);
+            writer.Write(blocked);
+            writer.Write(hasRestrictions);
+            writer.Close();
+            user_fs.Close();
+            */
+            LogOutput("Записал информацию о новом пользователе");
         }
 
         // Read User Data from Binary file
         private void GetUserData()
         {
             FileStream user_fs;
+            BinaryReader reader;
             if (!File.Exists(path))
             {
                 user_fs = File.Create(path);
+                AddUserData("admin", "", false, true);
             }
             else
             {
                 user_fs = File.OpenRead(path);
-
+                reader = new BinaryReader(user_fs, Encoding.Unicode);
                 int user_count = 0;
                 // TODO:: try to make it async
 
-                while (user_fs.Length != user_fs.Position)
+                while (reader.BaseStream.Position != reader.BaseStream.Length)
                 {
-                    int offset = 0;
-                    // Setup
-                    byte[] buffer = new byte[128];
-                   
                     User new_user = new User();
-                    // Read 128 bytes of username (64 unicode chars)
-                    user_fs.Read(buffer, 0, 128);
-                    //offset += 128;
-                    buffer.CopyTo(new_user.username,0);
-                    //new_user.username = buffer;
-                    // Read 128 bytes of password (64 unicode chars)
-                    user_fs.Read(buffer, 0, 128);
-                    //offset += 128;
-                    buffer.CopyTo(new_user.password,0);
-                    //new_user.password = buffer;
-                    // Read 2 bytes for block status
-                    user_fs.Read(buffer, 0, 2);
-                    //offset += 2;
-                    new_user.blocked = BitConverter.ToBoolean(buffer);
-                    // Read 2 bytes for restriction status
-                    user_fs.Read(buffer, 0, 2);
-                    //offset += 2;
-                    new_user.hasRestrictions = BitConverter.ToBoolean(buffer);
-
-                    string username_s = Encoding.Unicode.GetString(new_user.username);
-                    username_s = username_s.Remove(username_s.IndexOf('\0'));
-                    user_map[username_s] = new_user;
+                    try { 
+                    new_user.Username = reader.ReadString();
+                    new_user.Password = reader.ReadString();
+                    new_user.isBlocked = reader.ReadBoolean();
+                    new_user.hasPasswordRestrictions = reader.ReadBoolean();
+                    }
+                    catch (Exception e)
+                    {
+                        DialogResult dr = MessageBox.Show("Вызвано исключение: " + e.Message + "\n Возможно, пользовательские данные были повреждены");
+                        if (dr == DialogResult.OK)
+                        {
+                            Close();
+                        }
+                    }
+                    user_map[new_user.Username] = new_user;
                     user_count++;
-                    //user_fs.Seek(offset, SeekOrigin.Begin);
                 }
+
                 LogOutput("Сбор информации о пользователях завершен.\nНайдено пользователей: " + user_count);
-               
+                reader.Close();
             }
             user_fs.Close();
         }
 
-        public void AddUserData(string username, string password, bool blocked, bool hasRestrictions)
-        {
-
-            user_map[username] = new User(username, password, blocked, hasRestrictions); 
-            LogOutput("Открываю бинарный файл с записями");
-            FileStream user_fs = File.Open(path, FileMode.Open);
-            LogOutput("Файл открыт");
-            byte[] buffer = new byte[128];
-
-            Encoding.Unicode.GetBytes(username).CopyTo(buffer, 0);
-            user_fs.Write(buffer, 0, 128);
-            //user_fs.Write(Encoding.Unicode.GetBytes(username), 0, 128);
-            //user_fs.Seek(128, SeekOrigin.Current);
-
-            Encoding.Unicode.GetBytes(password).CopyTo(buffer, 0);
-            user_fs.Write(buffer, 0, 128);
-            //user_fs.Write(Encoding.Unicode.GetBytes(password), 0, 128);
-            //user_fs.Seek(128, SeekOrigin.Current);
-
-            BitConverter.GetBytes(blocked).CopyTo(buffer, 0);
-            user_fs.Write(buffer, 0, 2);
-            //user_fs.Write(buffer, 0, 128); user_fs.Write(BitConverter.GetBytes(blocked), 0, 2);
-            //user_fs.Seek(2, SeekOrigin.Current);
-
-            BitConverter.GetBytes(hasRestrictions).CopyTo(buffer, 0);
-            user_fs.Write(buffer, 0, 2);
-            //user_fs.Write(BitConverter.GetBytes(hasRestrictions), 0, 2);
-            user_fs.Close();
-            LogOutput("Записал информацию о новом пользователе");
-        }
+       
         
 
         private void InitializeLog()
@@ -187,15 +198,33 @@ namespace WinFormsApp1
             GetUserData();
             LoginForm loginForm = new LoginForm(this);
             loginForm.ShowDialog();
-
-            if (BitConverter.ToString(activeUser.username) == "admin")
+            if (loginForm.active_user_name != "") activeUser = user_map[loginForm.active_user_name];
+            else Close();
+            /*if (activeUser.Username == "admin")
             {
                 AdminPanelButton.Enabled = true;
-            }
+            }*/
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ChangePasswordForm changePasswordForm = new ChangePasswordForm(activeUser.Username, activeUser.hasPasswordRestrictions, false, this);
+            changePasswordForm.ShowDialog();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (activeUser != null) SaveUserData();
             logStream.Close();
         }
     }

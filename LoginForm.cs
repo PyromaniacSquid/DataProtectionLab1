@@ -14,7 +14,8 @@ namespace WinFormsApp1
     public partial class LoginForm : Form
     {
         MainForm main;
-        
+        public string active_user_name = "";
+        private int attempts = 3;
         // Launch Password Setup Form
         private void StartPasswordSetup(string user, bool hasRestrictions)
         {
@@ -23,11 +24,15 @@ namespace WinFormsApp1
             if (dr == DialogResult.OK)
             {
                 // TODO: open change password form
-                ChangePasswordForm changePasswordForm1 = new ChangePasswordForm(user, hasRestrictions);
-                changePasswordForm1.ShowDialog();
+                ChangePasswordForm changePasswordForm1 = new ChangePasswordForm(user, hasRestrictions, true, main);
+                if(changePasswordForm1.ShowDialog() == DialogResult.;
                 main.ChangePassword(user, changePasswordForm1.new_password);
 
             }
+        }
+        private void Reset()
+        {
+            PasswordInput.Text = "";
         }
 
         public LoginForm(MainForm mf)
@@ -35,12 +40,6 @@ namespace WinFormsApp1
             InitializeComponent();
             main = mf;
             main.LogOutput("Окно авторизации запущено");
-            if (main.user_map.Count == 0)
-            {
-                
-                mf.AddUserData("admin", "", false, true);
-                StartPasswordSetup("admin", true);
-            }
             
         }
 
@@ -63,40 +62,43 @@ namespace WinFormsApp1
             if (main.user_map.ContainsKey(username))
             {
                 // Check for an unchanged password
-                string real_password = Encoding.Unicode.GetString(main.user_map[username].password);
-                real_password = real_password.Remove(real_password.IndexOf('\0'));
+                string real_password = main.user_map[username].Password;
                 if (real_password == "")
                 {
                     StartPasswordSetup(username, false);
-                    /*
-                    // TODO: information popup, change open change password form
-                    DialogResult dr = MessageBox.Show("Необходимо установить пароль, чтобы продолжить.", "Внимание", MessageBoxButtons.OK);
-                    if (dr == DialogResult.OK)
-                    {
-                        // TODO: open change password form
-                        ChangePasswordForm changePasswordForm1 = new ChangePasswordForm();
-                        changePasswordForm1.Show();
-                    }*/
                 }
-                if (password == real_password)
+                else if (password == real_password)
                 {
                     main.LogOutput("User " + username + " authorized successfully\n");
                     MessageBox.Show("Добро пожаловать!");
+                    active_user_name = username;
                     Close();
-                    // TODO: proceed doing smth
                 }
                 else
                 {
                     main.LogOutput("User " + username + " failed authorization: wrong password");
-                    // TODO: error popup, clean password textbox
-                    MessageBox.Show("Неверный пароль");
+                    if (attempts == 1)
+                    {
+                        if (MessageBox.Show("Исчерпан лимит на количество попыток входа") == DialogResult.OK)
+                        {
+                            Close();
+                            main.Close();
+                        }
+                    }
+                    else
+                    {
+                        attempts--;
+                        MessageBox.Show("Неверный пароль, осталось попыток:" + attempts);
+                        Reset();
+                    }
                 }
             }
             else
             {
                 main.LogOutput("User " + username + " failed authorization: unknown user");
                 MessageBox.Show("Пользователя с указанным именем не существует");
-                // TODO: error popup, ask to contact admin for user creation
+                Reset();
+                UsernameTextBox.Text = "";
             }
         }
 
@@ -117,7 +119,7 @@ namespace WinFormsApp1
 
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            
         }
 
         private void LoginForm_KeyDown(object sender, KeyEventArgs e)
