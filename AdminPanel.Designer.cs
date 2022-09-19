@@ -43,9 +43,10 @@ namespace WinFormsApp1
             // 
             // CreateUserButton
             // 
-            this.CreateUserButton.Location = new System.Drawing.Point(103, 152);
+            this.CreateUserButton.Location = new System.Drawing.Point(90, 114);
+            this.CreateUserButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CreateUserButton.Name = "CreateUserButton";
-            this.CreateUserButton.Size = new System.Drawing.Size(208, 37);
+            this.CreateUserButton.Size = new System.Drawing.Size(182, 28);
             this.CreateUserButton.TabIndex = 0;
             this.CreateUserButton.Text = "Создать пользователя";
             this.CreateUserButton.UseVisualStyleBackColor = true;
@@ -55,25 +56,28 @@ namespace WinFormsApp1
             // 
             this.UserListBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.UserListBox.FormattingEnabled = true;
-            this.UserListBox.Location = new System.Drawing.Point(211, 269);
+            this.UserListBox.Location = new System.Drawing.Point(185, 202);
+            this.UserListBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UserListBox.Name = "UserListBox";
-            this.UserListBox.Size = new System.Drawing.Size(151, 28);
+            this.UserListBox.Size = new System.Drawing.Size(133, 23);
             this.UserListBox.TabIndex = 1;
             this.UserListBox.SelectedIndexChanged += new System.EventHandler(this.UserListBox_SelectedIndexChanged);
             // 
             // newUserBox
             // 
-            this.newUserBox.Location = new System.Drawing.Point(211, 95);
+            this.newUserBox.Location = new System.Drawing.Point(185, 71);
+            this.newUserBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.newUserBox.Name = "newUserBox";
-            this.newUserBox.Size = new System.Drawing.Size(182, 27);
+            this.newUserBox.Size = new System.Drawing.Size(160, 23);
             this.newUserBox.TabIndex = 2;
+            this.newUserBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.newUserBox_KeyDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 95);
+            this.label1.Location = new System.Drawing.Point(11, 71);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(193, 20);
+            this.label1.Size = new System.Drawing.Size(151, 15);
             this.label1.TabIndex = 3;
             this.label1.Text = "Имя нового пользователя";
             // 
@@ -81,9 +85,9 @@ namespace WinFormsApp1
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(64, 44);
+            this.label2.Location = new System.Drawing.Point(56, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(307, 25);
+            this.label2.Size = new System.Drawing.Size(237, 20);
             this.label2.TabIndex = 4;
             this.label2.Text = "Создание нового пользователя";
             // 
@@ -91,27 +95,28 @@ namespace WinFormsApp1
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(78, 219);
+            this.label3.Location = new System.Drawing.Point(68, 164);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(284, 25);
+            this.label3.Size = new System.Drawing.Size(222, 20);
             this.label3.TabIndex = 5;
             this.label3.Text = "Управление пользователями";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(61, 269);
+            this.label4.Location = new System.Drawing.Point(53, 202);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(107, 20);
+            this.label4.Size = new System.Drawing.Size(84, 15);
             this.label4.TabIndex = 6;
             this.label4.Text = "Пользователь";
             // 
             // BlockedState
             // 
             this.BlockedState.AutoSize = true;
-            this.BlockedState.Location = new System.Drawing.Point(36, 324);
+            this.BlockedState.Location = new System.Drawing.Point(32, 243);
+            this.BlockedState.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BlockedState.Name = "BlockedState";
-            this.BlockedState.Size = new System.Drawing.Size(132, 24);
+            this.BlockedState.Size = new System.Drawing.Size(106, 19);
             this.BlockedState.TabIndex = 7;
             this.BlockedState.Text = "Заблокирован";
             this.BlockedState.UseVisualStyleBackColor = true;
@@ -120,9 +125,10 @@ namespace WinFormsApp1
             // PWRestrictionsState
             // 
             this.PWRestrictionsState.AutoSize = true;
-            this.PWRestrictionsState.Location = new System.Drawing.Point(211, 324);
+            this.PWRestrictionsState.Location = new System.Drawing.Point(185, 243);
+            this.PWRestrictionsState.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PWRestrictionsState.Name = "PWRestrictionsState";
-            this.PWRestrictionsState.Size = new System.Drawing.Size(201, 24);
+            this.PWRestrictionsState.Size = new System.Drawing.Size(159, 19);
             this.PWRestrictionsState.TabIndex = 8;
             this.PWRestrictionsState.Text = "Ограничения на пароль";
             this.PWRestrictionsState.UseVisualStyleBackColor = true;
@@ -130,9 +136,10 @@ namespace WinFormsApp1
             // 
             // DeleteUserButton
             // 
-            this.DeleteUserButton.Location = new System.Drawing.Point(103, 383);
+            this.DeleteUserButton.Location = new System.Drawing.Point(90, 287);
+            this.DeleteUserButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DeleteUserButton.Name = "DeleteUserButton";
-            this.DeleteUserButton.Size = new System.Drawing.Size(208, 37);
+            this.DeleteUserButton.Size = new System.Drawing.Size(182, 28);
             this.DeleteUserButton.TabIndex = 9;
             this.DeleteUserButton.Text = "Удалить пользователя";
             this.DeleteUserButton.UseVisualStyleBackColor = true;
@@ -140,9 +147,9 @@ namespace WinFormsApp1
             // 
             // AdminPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 446);
+            this.ClientSize = new System.Drawing.Size(371, 334);
             this.Controls.Add(this.DeleteUserButton);
             this.Controls.Add(this.PWRestrictionsState);
             this.Controls.Add(this.BlockedState);
@@ -154,10 +161,11 @@ namespace WinFormsApp1
             this.Controls.Add(this.UserListBox);
             this.Controls.Add(this.CreateUserButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AdminPanel";
-            this.Text = "AdminPanel";
+            this.Text = "Управление пользователями";
             this.Load += new System.EventHandler(this.AdminPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

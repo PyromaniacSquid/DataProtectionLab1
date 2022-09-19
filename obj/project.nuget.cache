@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "LNoJGP0Ks10RrzTArg0/yPAFvjR4iEzjPAng0iePadUoRKcdE3MGcOd24TPporskmzYhRxUL+mKgZTRi93Exow==",
+  "dgSpecHash": "0gHtsk5b2iYI9yMSlZJR4aDkzXm6PlRogNJn1MCRsHIR5qxUhmcnFz1MyK4thegmMH5SfxgHkdJQC7KoV8z4Yg==",
   "success": true,
-  "projectFilePath": "D:\\Khorev\\LR1\\WinFormsApp1\\WinFormsApp1.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "M:\\7 semestr\\Защита Данных\\LR1\\WinFormsApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mrsta\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.21\\microsoft.netcore.app.host.win-x64.3.1.21.nupkg.sha512"
+  ],
   "logs": []
 }

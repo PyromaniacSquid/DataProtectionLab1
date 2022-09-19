@@ -58,6 +58,7 @@ namespace WinFormsApp1
 
         }
 
+        // Вход
         private void LoginButton_Click(object sender, EventArgs e)
         {
             // Get username and password from textboxes
@@ -72,6 +73,7 @@ namespace WinFormsApp1
                 {
                     StartPasswordSetup(username, main.user_map[username].hasPasswordRestrictions);
                 }
+                // Вход с правильным паролем
                 else if (password == real_password)
                 {
                     if (main.user_map[username].isBlocked)
@@ -88,6 +90,7 @@ namespace WinFormsApp1
                         Close();
                     }
                 }
+                // Ошибки входа
                 else
                 {
                     main.LogOutput("User " + username + " failed authorization: wrong password");
@@ -97,7 +100,6 @@ namespace WinFormsApp1
                         {
                             this.DialogResult = DialogResult.Abort;
                             Close();
-                            //main.Terminate();
                         }
                     }
                     else
@@ -117,6 +119,7 @@ namespace WinFormsApp1
             }
         }
 
+        // TODO:: удалить во имя рефакторинга
         private void LoginForm_Load(object sender, EventArgs e)
         {
 
@@ -132,10 +135,13 @@ namespace WinFormsApp1
 
         }
 
-        private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void UsernameInput_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                LoginButton_Click(sender, e);
+            }
         }
-
         private void LoginForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)

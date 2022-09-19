@@ -7,6 +7,13 @@
     <AssemblyName>Data_Protection_Lab1</AssemblyName>
     <RootNamespace>Data_Protection_Lab1</RootNamespace>
     <StartupObject></StartupObject>
+    <Description>Лабораторная работа №1.
+Разработка программы разграничения полномочий пользователей на основе парольной аутентификации. 
+Вариант №15: пароль должен содержать латинские и кириллические буквы, а также знаки арифметических операций (представлены +, -, *, /)</Description>
+    <Copyright>Малахов Николай Васильевич</Copyright>
+    <RepositoryUrl>https://github.com/PyromaniacSquid/DataProtectionLab1</RepositoryUrl>
+    <Company>Учебная групппа А-05-19</Company>
+    <Product>Программа разграничения полномочий пользователей на основе парольной аутентификации</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +32,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

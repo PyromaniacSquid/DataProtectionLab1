@@ -10,11 +10,14 @@ namespace WinFormsApp1
 {
     public partial class ChangePasswordForm : Form
     {
+        // Данные о пользователе
         public string new_password;
         private bool hasRestrictions;
-        private bool new_user;
-        private MainForm mf;
         private string username;
+        // Флаг нового пользователя (не имеет старого пароля)
+        private bool new_user;
+        // Объект основной формы
+        private MainForm mf;
         public ChangePasswordForm(string username = "", bool hasRestrictions = false, bool new_user = false, MainForm mf = null)
         {
             InitializeComponent();
@@ -28,12 +31,17 @@ namespace WinFormsApp1
             
         }
 
+        // Сброс введенных данных при ошибке
         private void Reset()
         {
             OldPasswordBox.Text = "";
             NewPasswordInput.Text = "";
             ConfirmPasswordInput.Text = "";
         }
+
+
+        // Я начинал писать по привычке все комментарии на английском, но в один момент стал вести лог на русском
+        // Все равно никто не читает, оставлю как было
 
         // Check Password restrictions and confirm password
         // Codes: 1 - password doesn't match restrictions

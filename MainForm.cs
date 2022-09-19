@@ -13,6 +13,7 @@ namespace WinFormsApp1
 {
     public partial class MainForm : Form
     {
+        // Класс пользователя
         public class User
         {
             private string username;
@@ -54,24 +55,34 @@ namespace WinFormsApp1
                 set { hasRestrictions = value; }
             }
         }
+        // Путь бинарного файла с пользовательскими данными
         string path = "users.dat";
+        // Путь текстового лог-файла 
         string log_path = "log.txt";
+        // Хранилище зарегистрированных пользователей (Хорев говорил БД избыточно использовать)
         public Dictionary<string, User> user_map = new Dictionary<string, User>();
+        
+        // Поток записи в лог-файл
         StreamWriter logStream;
 
+        // Флаг сохранения изменений (false, если выход из программы не нес изменений
+        // прим. выход во время смены пароля кнопкой "отмена" (в ТЗ прописано что в таком случае либо меняешь пароль, либо завершаешь работу) 
         private bool saveData = true;
         public User activeUser;
-
+        
+        // Выход из программы без сохранения (в основном для внешних вызовов из форм)
         public void Terminate()
         {
             saveData = false;
             Close();
         }
+        // Вывод в лог (доступен в других формах)
         public void LogOutput(string message)
         {
             logStream.WriteLine(DateTime.Now + " " + message);
         }
 
+        // Сохранение пользовательских данных в файл
         private void SaveUserData()
         {
             LogOutput("Сохраняю изменения");
@@ -91,30 +102,35 @@ namespace WinFormsApp1
             user_fs.Close();
         }
 
+        // Изменение пароля (вызывается в ChangePasswordForm)
         public void ChangePassword(string username, string password)
         {
             user_map[username].Password = password;
             LogOutput("Изменен пароль пользователя " + username);
         }
+        
+        // Добавление нового пользователя
         public void AddUserData(string username, string password, bool blocked, bool hasRestrictions)
         {
-
             user_map[username] = new User(username, password, blocked, hasRestrictions);
-            LogOutput("Записал информацию о новом пользователе");
+            LogOutput("Записал информацию о новом пользователе " + username);
         }
 
-        // Read User Data from Binary file
+        // Чтение пользовательских данных из бинарного файла
         private void GetUserData()
         {
             FileStream user_fs;
             BinaryReader reader;
+
             if (!File.Exists(path))
             {
+                // Первый запуск программы
                 user_fs = File.Create(path);
                 AddUserData("admin", "", false, false);
             }
             else
             {
+                // Сбор пользовательских данных
                 user_fs = File.OpenRead(path);
                 reader = new BinaryReader(user_fs, Encoding.Unicode);
                 int user_count = 0;
@@ -147,9 +163,7 @@ namespace WinFormsApp1
             user_fs.Close();
         }
 
-
-
-
+        // Инициализация лог-файла
         private void InitializeLog()
         {
             if (File.Exists(log_path))
@@ -160,11 +174,11 @@ namespace WinFormsApp1
             LogOutput("Лог-файл создан");
         }
 
-
         public MainForm()
         {
             InitializeComponent();
             InitializeLog();
+            pictureBox1.Image = pictureBox1.InitialImage;
             LogOutput("Программа запущена");
         }
 
@@ -173,15 +187,17 @@ namespace WinFormsApp1
             Application.Exit();
         }
 
+        // Кнопка "Завершение работы"
         private void button2_Click(object sender, EventArgs e)
         {
-
             this.Close();
         }
 
+        // Кнопка "Сменить пароль"
         private void button1_Click(object sender, EventArgs e)
         {
             ChangePasswordForm changePasswordForm = new ChangePasswordForm(activeUser.Username, activeUser.hasPasswordRestrictions, false, this);
+            // Проверка на выход с сохранением
             if (changePasswordForm.ShowDialog() == DialogResult.OK)
             {
                 ChangePassword(activeUser.Username, changePasswordForm.new_password);
@@ -198,8 +214,11 @@ namespace WinFormsApp1
         private void MainForm_Load(object sender, EventArgs e)
         {
             GetUserData();
+            // Открытие формы входа
             LoginForm loginForm = new LoginForm(this);
             DialogResult loginRes = loginForm.ShowDialog();
+            
+            // Вход успешен
             if (loginRes == DialogResult.OK)
             {
                 activeUser = user_map[loginForm.active_user_name];
@@ -209,26 +228,38 @@ namespace WinFormsApp1
                     AdminPanelButton.Visible = true;
                 }
             }
+            // Отмена при установке пароля/трехкратная ошибка в пароле
             else if (loginRes == DialogResult.Abort)
             {
+                LogOutput("Пользователь прервал вход или достигнуто три ошибки ввода пароля");
                 Terminate();
             }
+            // Отказ от входа 
             else
             {
+                // Пароль мог быть установлен, сохраняем изменения
+                LogOutput("Пользователь закрыл программу, не войдя в профиль");
                 Close();
             }
 
         }
 
+        // Панель администратора
         private void AdminPanelButton_Click(object sender, EventArgs e)
         {
             AdminPanel adm_p = new AdminPanel(this);
             adm_p.ShowDialog();
         }
+        // Окно "О программе"
         private void ShowAboutForm(object sender, EventArgs e)
         {
             About about = new About();
             about.ShowDialog();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
