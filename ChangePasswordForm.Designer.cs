@@ -43,45 +43,43 @@ namespace WinFormsApp1
             // ConfirmPasswordLabel
             // 
             this.ConfirmPasswordLabel.AutoSize = true;
-            this.ConfirmPasswordLabel.Location = new System.Drawing.Point(26, 134);
+            this.ConfirmPasswordLabel.Location = new System.Drawing.Point(30, 179);
             this.ConfirmPasswordLabel.Name = "ConfirmPasswordLabel";
-            this.ConfirmPasswordLabel.Size = new System.Drawing.Size(123, 15);
+            this.ConfirmPasswordLabel.Size = new System.Drawing.Size(157, 20);
             this.ConfirmPasswordLabel.TabIndex = 0;
             this.ConfirmPasswordLabel.Text = "Подтвердите пароль:";
             // 
             // PasswordLabel
             // 
             this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.Location = new System.Drawing.Point(57, 99);
+            this.PasswordLabel.Location = new System.Drawing.Point(65, 132);
             this.PasswordLabel.Name = "PasswordLabel";
-            this.PasswordLabel.Size = new System.Drawing.Size(91, 15);
+            this.PasswordLabel.Size = new System.Drawing.Size(115, 20);
             this.PasswordLabel.TabIndex = 1;
             this.PasswordLabel.Text = "Новый пароль:";
             // 
             // ConfirmPasswordInput
             // 
-            this.ConfirmPasswordInput.Location = new System.Drawing.Point(170, 131);
-            this.ConfirmPasswordInput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ConfirmPasswordInput.Location = new System.Drawing.Point(194, 175);
             this.ConfirmPasswordInput.Name = "ConfirmPasswordInput";
             this.ConfirmPasswordInput.PasswordChar = '*';
-            this.ConfirmPasswordInput.Size = new System.Drawing.Size(110, 23);
+            this.ConfirmPasswordInput.Size = new System.Drawing.Size(125, 27);
             this.ConfirmPasswordInput.TabIndex = 4;
+            this.ConfirmPasswordInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConfirmPasswordInput_KeyDown);
             // 
             // NewPasswordInput
             // 
-            this.NewPasswordInput.Location = new System.Drawing.Point(170, 96);
-            this.NewPasswordInput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.NewPasswordInput.Location = new System.Drawing.Point(194, 128);
             this.NewPasswordInput.Name = "NewPasswordInput";
             this.NewPasswordInput.PasswordChar = '*';
-            this.NewPasswordInput.Size = new System.Drawing.Size(110, 23);
+            this.NewPasswordInput.Size = new System.Drawing.Size(125, 27);
             this.NewPasswordInput.TabIndex = 3;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(66, 174);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SaveButton.Location = new System.Drawing.Point(75, 232);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(82, 22);
+            this.SaveButton.Size = new System.Drawing.Size(94, 29);
             this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "Сохранить";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -89,10 +87,9 @@ namespace WinFormsApp1
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(181, 174);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CancelButton.Location = new System.Drawing.Point(207, 232);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(82, 22);
+            this.CancelButton.Size = new System.Drawing.Size(94, 29);
             this.CancelButton.TabIndex = 6;
             this.CancelButton.Text = "Отмена";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -100,9 +97,9 @@ namespace WinFormsApp1
             // 
             // TextLabel
             // 
-            this.TextLabel.Location = new System.Drawing.Point(24, 7);
+            this.TextLabel.Location = new System.Drawing.Point(27, 9);
             this.TextLabel.Name = "TextLabel";
-            this.TextLabel.Size = new System.Drawing.Size(256, 44);
+            this.TextLabel.Size = new System.Drawing.Size(293, 59);
             this.TextLabel.TabIndex = 6;
             this.TextLabel.Text = "Пожалуйста, установите новый пароль для указанного пользователя";
             this.TextLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -110,26 +107,25 @@ namespace WinFormsApp1
             // OldPasswordLabel
             // 
             this.OldPasswordLabel.AutoSize = true;
-            this.OldPasswordLabel.Location = new System.Drawing.Point(57, 62);
+            this.OldPasswordLabel.Location = new System.Drawing.Point(65, 83);
             this.OldPasswordLabel.Name = "OldPasswordLabel";
-            this.OldPasswordLabel.Size = new System.Drawing.Size(92, 15);
+            this.OldPasswordLabel.Size = new System.Drawing.Size(116, 20);
             this.OldPasswordLabel.TabIndex = 7;
             this.OldPasswordLabel.Text = "Старый пароль";
             // 
             // OldPasswordBox
             // 
-            this.OldPasswordBox.Location = new System.Drawing.Point(170, 59);
-            this.OldPasswordBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.OldPasswordBox.Location = new System.Drawing.Point(194, 79);
             this.OldPasswordBox.Name = "OldPasswordBox";
             this.OldPasswordBox.PasswordChar = '*';
-            this.OldPasswordBox.Size = new System.Drawing.Size(110, 23);
+            this.OldPasswordBox.Size = new System.Drawing.Size(125, 27);
             this.OldPasswordBox.TabIndex = 2;
             // 
             // ChangePasswordForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 216);
+            this.ClientSize = new System.Drawing.Size(358, 288);
             this.Controls.Add(this.OldPasswordBox);
             this.Controls.Add(this.OldPasswordLabel);
             this.Controls.Add(this.TextLabel);
@@ -139,7 +135,9 @@ namespace WinFormsApp1
             this.Controls.Add(this.ConfirmPasswordInput);
             this.Controls.Add(this.PasswordLabel);
             this.Controls.Add(this.ConfirmPasswordLabel);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ChangePasswordForm";
             this.Text = "Установка пароля";
             this.ResumeLayout(false);

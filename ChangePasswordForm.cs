@@ -86,7 +86,11 @@ namespace WinFormsApp1
                     break;
                 default:
                     new_password = NewPasswordInput.Text;
-                    if (MessageBox.Show("Пароль успешно изменён") == DialogResult.OK) Close();
+                    if (MessageBox.Show("Пароль успешно изменён") == DialogResult.OK)
+                    {
+                        this.DialogResult =DialogResult.OK;
+                        Close();
+                    }
                     break;
             }
         }
@@ -95,6 +99,14 @@ namespace WinFormsApp1
         {
             new_password = "";
             Close();
+        }
+
+        private void ConfirmPasswordInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SaveButton_Click(sender, e);
+            }
         }
     }
 }

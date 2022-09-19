@@ -24,10 +24,15 @@ namespace WinFormsApp1
             if (dr == DialogResult.OK)
             {
                 // TODO: open change password form
-                ChangePasswordForm changePasswordForm1 = new ChangePasswordForm(user, hasRestrictions, true, main);
-                if(changePasswordForm1.ShowDialog() == DialogResult.;
-                main.ChangePassword(user, changePasswordForm1.new_password);
-
+                ChangePasswordForm changePasswordForm1 = new ChangePasswordForm(user, hasRestrictions, true,main);
+                if(changePasswordForm1.ShowDialog() == DialogResult.OK)
+                    main.ChangePassword(user, changePasswordForm1.new_password);
+                else
+                {
+                    this.DialogResult = DialogResult.Abort;
+                    Close();
+                    //main.Terminate();
+                }
             }
         }
         private void Reset()
@@ -65,14 +70,23 @@ namespace WinFormsApp1
                 string real_password = main.user_map[username].Password;
                 if (real_password == "")
                 {
-                    StartPasswordSetup(username, false);
+                    StartPasswordSetup(username, main.user_map[username].hasPasswordRestrictions);
                 }
                 else if (password == real_password)
                 {
-                    main.LogOutput("User " + username + " authorized successfully\n");
-                    MessageBox.Show("Добро пожаловать!");
-                    active_user_name = username;
-                    Close();
+                    if (main.user_map[username].isBlocked)
+                    {
+                        MessageBox.Show("Данный пользователь заблокирован");
+                        Reset();
+                    }
+                    else
+                    {
+                        main.LogOutput("User " + username + " authorized successfully\n");
+                        MessageBox.Show("Добро пожаловать!");
+                        active_user_name = username;
+                        this.DialogResult = DialogResult.OK;
+                        Close();
+                    }
                 }
                 else
                 {
@@ -81,8 +95,9 @@ namespace WinFormsApp1
                     {
                         if (MessageBox.Show("Исчерпан лимит на количество попыток входа") == DialogResult.OK)
                         {
+                            this.DialogResult = DialogResult.Abort;
                             Close();
-                            main.Close();
+                            //main.Terminate();
                         }
                     }
                     else
@@ -119,7 +134,6 @@ namespace WinFormsApp1
 
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            
         }
 
         private void LoginForm_KeyDown(object sender, KeyEventArgs e)

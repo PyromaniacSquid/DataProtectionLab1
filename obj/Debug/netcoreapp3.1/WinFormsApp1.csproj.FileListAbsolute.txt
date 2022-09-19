@@ -1,9 +1,3 @@
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.exe
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.deps.json
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.runtimeconfig.json
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.runtimeconfig.dev.json
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.dll
-D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\WinFormsApp1.pdb
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.csproj.AssemblyReference.cache
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.ChangePasswordForm.resources
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.LoginForm.resources
@@ -12,8 +6,6 @@ D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.GeneratedMSBuild
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.AssemblyInfoInputs.cache
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.AssemblyInfo.cs
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.csproj.CoreCompileInputs.cache
-D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.dll
-D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.pdb
 D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.genruntimeconfig.cache
 M:\7 semestr\Защита Данных\LR1\obj\Debug\netcoreapp3.1\WinFormsApp1.csprojAssemblyReference.cache
 M:\7 semestr\Защита Данных\LR1\obj\Debug\netcoreapp3.1\WinFormsApp1.ChangePasswordForm.resources
@@ -33,3 +25,15 @@ M:\7 semestr\Защита Данных\LR1\bin\Debug\netcoreapp3.1\Data_Protecti
 M:\7 semestr\Защита Данных\LR1\obj\Debug\netcoreapp3.1\WinFormsApp1.MainForm.resources
 M:\7 semestr\Защита Данных\LR1\obj\Debug\netcoreapp3.1\Data_Protection_Lab1.dll
 M:\7 semestr\Защита Данных\LR1\obj\Debug\netcoreapp3.1\Data_Protection_Lab1.pdb
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.MainForm.resources
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\Data_Protection_Lab1.dll
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\Data_Protection_Lab1.pdb
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.exe
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.deps.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.runtimeconfig.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.runtimeconfig.dev.json
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.dll
+D:\Khorev\LR1\WinFormsApp1\bin\Debug\netcoreapp3.1\Data_Protection_Lab1.pdb
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.AdminPanel.resources
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\WinFormsApp1.About.resources
+D:\Khorev\LR1\WinFormsApp1\obj\Debug\netcoreapp3.1\Data_Protection_Lab1.Properties.Resources.resources
