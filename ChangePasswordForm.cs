@@ -72,7 +72,7 @@ namespace WinFormsApp1
             if (!new_user)
             {
                 // Assert old password is correct
-                if (OldPasswordBox.Text != mf.user_map[username].Password)
+                if (OldPasswordBox.Text != mf.Decrypt(username, mf.user_map[username].Password))
                 {
                     if (MessageBox.Show("Старый пароль введен неверно") == DialogResult.OK)            
                         return;
@@ -96,7 +96,7 @@ namespace WinFormsApp1
                     new_password = NewPasswordInput.Text;
                     if (MessageBox.Show("Пароль успешно изменён") == DialogResult.OK)
                     {
-                        this.DialogResult =DialogResult.OK;
+                        this.DialogResult = DialogResult.OK;
                         Close();
                     }
                     break;

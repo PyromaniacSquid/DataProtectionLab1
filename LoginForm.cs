@@ -68,7 +68,10 @@ namespace WinFormsApp1
             if (main.user_map.ContainsKey(username))
             {
                 // Check for an unchanged password
-                string real_password = main.user_map[username].Password;
+                string real_password = main.Decrypt(username, main.user_map[username].Password);
+                main.LogOutput("Получили пароль :" + password);
+                main.LogOutput("Зашифрованная версия настоящего пароля пользователя: " + main.user_map[username].Password);
+                main.LogOutput("Дешифрованная версия пароля " + real_password);
                 if (real_password == "")
                 {
                     StartPasswordSetup(username, main.user_map[username].hasPasswordRestrictions);

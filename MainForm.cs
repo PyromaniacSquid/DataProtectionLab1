@@ -8,6 +8,8 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
+using System.Reflection.Emit;
 
 namespace WinFormsApp1
 {
@@ -101,12 +103,118 @@ namespace WinFormsApp1
             writer.Close();
             user_fs.Close();
         }
+        // Оболочка для интуитивного вызова функции шифровки
+        public string PermutationDecryption(string username, string password)
+        {
+            return PermutationEncryption(username, password, true);
+        }
+
+
+        public string PermutationEncryption (string username, string password, bool decryption = false)
+        {   
+            string result = "";
+         
+            // Проверка на длины данных
+            if (username.Length > password.Length)
+            {
+                // Сокращаем ключ до размера пароля
+                username = username.Remove(password.Length);
+            }
+            // Создаем массив индексов перестановки
+            List<KeyValuePair<char, int>> indexes = new List<KeyValuePair<char, int>>();
+            for (int i = 0; i < username.Length; i++)
+            {
+                KeyValuePair<char, int> new_pair = new KeyValuePair<char,int>(username[i], i);
+                indexes.Add(new_pair);
+            }
+            // Сортируем по символам имени пользователя
+            indexes = indexes.OrderBy(x => x.Key).ToList();
+
+            // Поблочно обрабатываем 
+            
+            // Текущая буква пароля
+            int idx = 0;
+            // Длина ключа (имени пользователя)
+            int key_length = username.Length;
+            while (idx < password.Length)
+            {
+                string block;
+                int chars_left = password.Length - idx;
+
+                // Формируем блок символов
+                if (chars_left < key_length)
+                {
+                    block = password.Substring(idx, chars_left);
+                    // Добавить пробелы если последний блок не кратен размеру ключа
+                    string addition = new string (' ', key_length - chars_left);
+                    block += addition;
+                }
+                else 
+                    block = password.Substring(idx, key_length);
+
+
+                // Режим расшифровки
+                if (decryption)
+                {
+                    char[] correct_order = new char[key_length];
+                    int block_index = 0;
+                    
+
+                    foreach (KeyValuePair<char, int> pair in indexes)
+                    {
+                        correct_order[pair.Value] = block[block_index];
+                        block_index++;
+                    }
+                    for (int i = 0; i < correct_order.Length; i++)
+                    {
+                        result += correct_order[i];
+                    }
+                }
+                // Шифрование
+                else
+                { // Записываем элементы блока в результирующее значение по индексу перестановки
+                    foreach (KeyValuePair<char, int> pair in indexes)
+                    {
+                        result += block[pair.Value];
+                    }
+                }
+                idx += key_length;
+            }
+            if (decryption) return result.TrimEnd();
+            return result;
+        }
+        public string GammaEncryption (string password)
+        {
+            string result_string = "";
+            char[] char_arr = password.ToCharArray(); 
+
+            int G_b = 1;
+            for (int i = 0; i < char_arr.Length; i++)
+            {
+                char c = (char)(char_arr[i] ^ G_b);
+                result_string += c;
+                G_b = (5 * G_b + 3)%256;
+            }
+            return result_string;
+        }
+
+        public string Decrypt(string username, string password)
+        {
+            return PermutationDecryption(username, GammaEncryption(password));
+        }
+        public string Encrypt(string username, string password)
+        {
+            return GammaEncryption(PermutationEncryption(username, password));
+        }
 
         // Изменение пароля (вызывается в ChangePasswordForm)
         public void ChangePassword(string username, string password)
         {
-            user_map[username].Password = password;
+            // Запускаем шифрование
+            user_map[username].Password = Encrypt(username, password);
             LogOutput("Изменен пароль пользователя " + username);
+            LogOutput("Пароль до шифрования " + password);
+            LogOutput("Пароль после шифрования " + user_map[username].Password);
         }
         
         // Добавление нового пользователя
@@ -141,7 +249,7 @@ namespace WinFormsApp1
                     User new_user = new User();
                     try {
                         new_user.Username = reader.ReadString();
-                        new_user.Password = reader.ReadString();
+                        new_user.Password = reader.ReadString();                        
                         new_user.isBlocked = reader.ReadBoolean();
                         new_user.hasPasswordRestrictions = reader.ReadBoolean();
                     }
