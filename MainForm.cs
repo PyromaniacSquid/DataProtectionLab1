@@ -457,6 +457,7 @@ namespace WinFormsApp1
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (saveData) SaveUserData();
+            File.Delete(temp_path);
             //logStream.Close();
         }
 
