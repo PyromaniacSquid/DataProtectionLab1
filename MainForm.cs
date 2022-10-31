@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Numerics;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 
 namespace WinFormsApp1
 {
@@ -57,13 +59,23 @@ namespace WinFormsApp1
                 set { hasRestrictions = value; }
             }
         }
+
+        // Ключ шифрования
+        byte[] _key;
+        // Случайное значение для ключа
+        byte[] _salt;
+
         // Путь бинарного файла с пользовательскими данными
         string path = "users.dat";
         // Путь текстового лог-файла 
         string log_path = "log.txt";
+        // Путь временного файла с расшфированными данными
+        private readonly string temp_path = Path.GetTempFileName();
+
+
         // Хранилище зарегистрированных пользователей (Хорев говорил БД избыточно использовать)
         public Dictionary<string, User> user_map = new Dictionary<string, User>();
-        
+
         // Поток записи в лог-файл
         StreamWriter logStream;
 
@@ -71,7 +83,121 @@ namespace WinFormsApp1
         // прим. выход во время смены пароля кнопкой "отмена" (в ТЗ прописано что в таком случае либо меняешь пароль, либо завершаешь работу) 
         private bool saveData = true;
         public User activeUser;
-        
+
+        public bool ContainsAdmin()
+        {
+            return user_map.ContainsKey("admin");
+        }
+
+        // Генерация нового ключа шифрования по заданной парольной фразе
+        public void GenerateEncryptionKey(string passphrase, bool new_passphrase)
+        {
+            if (new_passphrase)
+            {
+                _salt = new byte[32];
+                new RNGCryptoServiceProvider().GetBytes(_salt);
+            }
+            else
+            {
+                using (FileStream fs = new FileStream(path, FileMode.Open))
+                using (BinaryReader br = new BinaryReader(fs))
+                    _salt = br.ReadBytes(32);
+            }
+
+            var passphraseBytes = Encoding.Unicode.GetBytes(passphrase);
+            var bytes = passphraseBytes.Concat(_salt).ToArray();
+
+            MD5 md5 = MD5.Create();
+            var key = md5.ComputeHash(bytes);
+            _key = new PasswordDeriveBytes(key, _salt).GetBytes(32);
+
+        }
+
+        // Шифрование данных по ключу
+        public byte[] EncryptUserData(byte[] TempFileData, byte[] Key)
+        {
+            byte[] encrypted_user_data;
+            byte[] IV;
+
+            Aes aes = Aes.Create();
+            aes.Key = Key;
+            aes.GenerateIV();
+            IV = aes.IV;
+            aes.Mode = CipherMode.CFB;
+            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            using (var ms = new MemoryStream())
+            {
+                using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                using (var bw = new BinaryWriter(cs))
+                {
+                    bw.Write(TempFileData);
+                }
+                encrypted_user_data = ms.ToArray();
+            }
+            var combinedIvCt = new byte[IV.Length + encrypted_user_data.Length];
+            Array.Copy(IV, 0, combinedIvCt, 0, IV.Length);
+            Array.Copy(encrypted_user_data, 0, combinedIvCt, IV.Length, encrypted_user_data.Length);
+            return combinedIvCt;
+        }
+
+        // Шифрует пользовательские даныне и записывает их в файл
+        public void SaveUserDataFile()
+        {
+            byte[] userData = File.ReadAllBytes(temp_path);
+            byte[] encryptedUserData = EncryptUserData(userData, _key);
+            using (var fs = new FileStream(path, FileMode.Create))
+            using (var bw = new BinaryWriter(fs))
+            {
+                bw.Write(_salt);
+                bw.Write(encryptedUserData);
+            }
+            LogOutput("Данные внесены в файл");
+        }
+
+        // Расшифровка данных по ключу во временный файл
+        public byte[] DecryptUserData(byte[] data, byte[] key)
+        {
+            byte[] decrypted_data;
+            Aes aes = Aes.Create();
+
+            aes.Key = key;
+            byte[] IV = new byte[aes.BlockSize / 8];
+            byte[] cipherText = new byte[data.Length - IV.Length];
+            Array.Copy(data, IV, IV.Length);
+            Array.Copy(data, IV.Length, cipherText, 0, cipherText.Length);
+            aes.IV = IV;
+            aes.Mode = CipherMode.CFB;
+            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            using (var ms = new MemoryStream(cipherText))
+            using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+            using (var sr = new BinaryReader(cs))
+            {
+                //UNSAFE
+                decrypted_data = sr.ReadBytes(cipherText.Length);
+            }
+
+            return decrypted_data;
+        }
+
+        public bool DecryptUserDataFile()
+        {
+            byte[] allData = File.ReadAllBytes(path);
+            byte[] encryptedUserData = new byte[allData.Length-32];
+            Array.Copy(allData, _salt, 32);
+            Array.Copy(allData, 32, encryptedUserData, 0, allData.Length-32);
+            try
+            {
+                var userData = DecryptUserData(encryptedUserData, _key);
+                File.WriteAllBytes(temp_path, userData);
+                return true;
+            }
+            catch (CryptographicException e)
+            {
+                return false;
+            }
+            
+        }
+
         // Выход из программы без сохранения (в основном для внешних вызовов из форм)
         public void Terminate()
         {
@@ -81,27 +207,31 @@ namespace WinFormsApp1
         // Вывод в лог (доступен в других формах)
         public void LogOutput(string message)
         {
-            logStream.WriteLine(DateTime.Now + " " + message);
+            using (var logStream = new FileStream(log_path, FileMode.Append))
+            using (var logWriter = new StreamWriter(logStream))
+                logWriter.WriteLine(DateTime.Now + " " + message);
         }
 
-        // Сохранение пользовательских данных в файл
+        // Сохранение пользовательских данных во временный файл
         private void SaveUserData()
         {
             LogOutput("Сохраняю изменения");
-            File.Delete(path);
-            FileStream user_fs = File.Create(path);
-            BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode);
-            foreach (KeyValuePair<string, User> user_pair in user_map)
-            {
-                User cur_user = user_pair.Value;
-                writer.Write(cur_user.Username);
-                writer.Write(cur_user.Password);
-                writer.Write(cur_user.isBlocked);
-                writer.Write(cur_user.hasPasswordRestrictions);
-            }
-            LogOutput("Изменения сохранены");
-            writer.Close();
-            user_fs.Close();
+            LogOutput("Вношу данные во временный файл");
+            File.Delete(temp_path);
+            using (var user_fs = File.OpenWrite(temp_path))
+                using (BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode))
+                {
+                    foreach (KeyValuePair<string, User> user_pair in user_map)
+                    {
+                        User cur_user = user_pair.Value;
+                        writer.Write(cur_user.Username);
+                        writer.Write(cur_user.Password);
+                        writer.Write(cur_user.isBlocked);
+                        writer.Write(cur_user.hasPasswordRestrictions);
+                    }
+                }
+                LogOutput("Данные внесены, запускаю шифрование");
+            SaveUserDataFile();
         }
         // Оболочка для интуитивного вызова функции шифровки
         public string PermutationDecryption(string username, string password)
@@ -227,48 +357,59 @@ namespace WinFormsApp1
         // Чтение пользовательских данных из бинарного файла
         private void GetUserData()
         {
-            FileStream user_fs;
-            BinaryReader reader;
 
             if (!File.Exists(path))
             {
                 // Первый запуск программы
-                user_fs = File.Create(path);
+                using (var fs = File.Create(path))
+                //
                 AddUserData("admin", "", false, false);
             }
             else
             {
-                // Сбор пользовательских данных
-                user_fs = File.OpenRead(path);
-                reader = new BinaryReader(user_fs, Encoding.Unicode);
-                int user_count = 0;
-
-
-                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                LogOutput("Дешифрую данные пользователей");
+                if (!DecryptUserDataFile())
                 {
-                    User new_user = new User();
-                    try {
-                        new_user.Username = reader.ReadString();
-                        new_user.Password = reader.ReadString();                        
-                        new_user.isBlocked = reader.ReadBoolean();
-                        new_user.hasPasswordRestrictions = reader.ReadBoolean();
-                    }
-                    catch (Exception e)
+                    LogOutput("Ошибка дешифровки");
+                }
+                else
+                {
+                    LogOutput("Дешифровка закончена");
+
+
+                    // Сбор пользовательских данных
+
+                    int user_count = 0;
+
+                    using (var fs = File.OpenRead(temp_path))
+                    using (var br = new BinaryReader(fs, Encoding.Unicode))
                     {
-                        DialogResult dr = MessageBox.Show("Вызвано исключение: " + e.Message + "\n Возможно, пользовательские данные были повреждены");
-                        if (dr == DialogResult.OK)
+
+                        while (br.BaseStream.Position != br.BaseStream.Length)
                         {
-                            Close();
+                            User new_user = new User();
+                            try
+                            {
+                                new_user.Username = br.ReadString();
+                                new_user.Password = br.ReadString();
+                                new_user.isBlocked = br.ReadBoolean();
+                                new_user.hasPasswordRestrictions = br.ReadBoolean();
+                            }
+                            catch (Exception e)
+                            {
+                                DialogResult dr = MessageBox.Show("Вызвано исключение: " + e.Message + "\n Возможно, пользовательские данные были повреждены");
+                                if (dr == DialogResult.OK)
+                                {
+                                    Close();
+                                }
+                            }
+                            user_map[new_user.Username] = new_user;
+                            user_count++;
                         }
                     }
-                    user_map[new_user.Username] = new_user;
-                    user_count++;
+                    LogOutput("Сбор информации о пользователях завершен.\nНайдено пользователей: " + user_count);
                 }
-
-                LogOutput("Сбор информации о пользователях завершен.\nНайдено пользователей: " + user_count);
-                reader.Close();
             }
-            user_fs.Close();
         }
 
         // Инициализация лог-файла
@@ -278,7 +419,7 @@ namespace WinFormsApp1
             {
                 File.Delete(log_path);
             }
-            logStream = new StreamWriter(log_path);
+            //logStream = new StreamWriter(log_path);
             LogOutput("Лог-файл создан");
         }
 
@@ -316,40 +457,79 @@ namespace WinFormsApp1
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (saveData) SaveUserData();
-            logStream.Close();
+            //logStream.Close();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            GetUserData();
-            // Открытие формы входа
-            LoginForm loginForm = new LoginForm(this);
-            DialogResult loginRes = loginForm.ShowDialog();
+            // Панель ввода/установки парольной фразы шифрования.
             
-            // Вход успешен
-            if (loginRes == DialogResult.OK)
+            DialogResult AccessDR = new Access(this, !File.Exists(path)).ShowDialog();
+
+            string msg;
+            switch (AccessDR)
             {
-                activeUser = user_map[loginForm.active_user_name];
-                if (activeUser.Username == "admin")
-                {
-                    AdminPanelButton.Enabled = true;
-                    AdminPanelButton.Visible = true;
-                }
+                case DialogResult.Abort:
+                    msg = "Превышен лимит неверного ввода парольной фразы.";
+                    break;
+                case DialogResult.Cancel:
+                    msg = "Парольная фраза не была установлена";
+                    break;
+                default:
+                    msg = File.Exists(path) ? "Парольная фраза введена. В случае неверного ввода программа закончит работу." : "Парольная фраза установлена.";
+                    break;
             }
-            // Отмена при установке пароля/трехкратная ошибка в пароле
-            else if (loginRes == DialogResult.Abort)
+            MessageBox.Show(msg);
+
+
+            // Выход в случае неуспешной установки парольной фразы.
+            if (AccessDR != DialogResult.OK)
             {
-                LogOutput("Пользователь прервал вход или достигнуто три ошибки ввода пароля");
+                LogOutput("ОШИБКА: " + msg);
                 Terminate();
             }
-            // Отказ от входа 
             else
             {
-                // Пароль мог быть установлен, сохраняем изменения
-                LogOutput("Пользователь закрыл программу, не войдя в профиль");
-                Close();
-            }
 
+                GetUserData();
+
+                if (!ContainsAdmin())
+                {
+                    LogOutput("ОШИБКА: Не найден администратор, предполагается ошибка ввода парольной фразы шифрования"); 
+                    if (MessageBox.Show("Неверно введена парольная фраза.") == DialogResult.OK)
+                    Terminate();
+                }
+                else
+                {
+                    // Открытие формы входа
+                    LoginForm loginForm = new LoginForm(this);
+                    DialogResult loginRes = loginForm.ShowDialog();
+
+                    // Вход успешен
+                    if (loginRes == DialogResult.OK)
+                    {
+                        activeUser = user_map[loginForm.active_user_name];
+                        if (activeUser.Username == "admin")
+                        {
+                            AdminPanelButton.Enabled = true;
+                            AdminPanelButton.Visible = true;
+                        }
+                    }
+                    // Отмена при установке пароля/трехкратная ошибка в пароле
+                    else if (loginRes == DialogResult.Abort)
+                    {
+                        LogOutput("Пользователь прервал вход или достигнуто три ошибки ввода пароля");
+                        Terminate();
+                    }
+                    // Отказ от входа 
+                    else
+                    {
+                        // Пароль мог быть установлен, сохраняем изменения
+                        LogOutput("Пользователь закрыл программу, не войдя в профиль");
+                        Close();
+                    }
+                }
+            }
         }
 
         // Панель администратора

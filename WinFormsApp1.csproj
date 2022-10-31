@@ -2,19 +2,20 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>Data_Protection_Lab1</AssemblyName>
     <RootNamespace>Data_Protection_Lab1</RootNamespace>
     <StartupObject></StartupObject>
     <Description>
-      Лабораторная работа №3.
-      Программная реализация криптографических алгоритмов
-      Вариант №15: Шифрование перестановкой и гаммированием (последовательно)</Description>
+      Лабораторная работа №4.
+      Использование криптографических средств для защиты конфиденциальной информации
+      Вариант №15: Блочное шифрование перестановкой с обратной связью по шифротексту и хешированием MD5 с использованием случайного значения</Description>
     <Copyright>Малахов Николай Васильевич</Copyright>
     <RepositoryUrl>https://github.com/PyromaniacSquid/DataProtectionLab1</RepositoryUrl>
     <Company>Учебная групппа А-05-19</Company>
     <Product>Программа разграничения полномочий пользователей на основе парольной аутентификации</Product>
+    <FileVersion>1.0.0.4</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
