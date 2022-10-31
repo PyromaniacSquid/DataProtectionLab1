@@ -40,6 +40,7 @@
             // 
             this.PasswordInput.Location = new System.Drawing.Point(272, 84);
             this.PasswordInput.Name = "PasswordInput";
+            this.PasswordInput.PasswordChar = '*';
             this.PasswordInput.Size = new System.Drawing.Size(197, 23);
             this.PasswordInput.TabIndex = 0;
             this.PasswordInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordInput_KeyDown);
@@ -89,6 +90,7 @@
             // 
             this.PasswordConfirmInput.Location = new System.Drawing.Point(272, 132);
             this.PasswordConfirmInput.Name = "PasswordConfirmInput";
+            this.PasswordConfirmInput.PasswordChar = '*';
             this.PasswordConfirmInput.Size = new System.Drawing.Size(197, 23);
             this.PasswordConfirmInput.TabIndex = 1;
             this.PasswordConfirmInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordConfirmInput_KeyDown);
