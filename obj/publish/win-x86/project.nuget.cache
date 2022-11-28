@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "hwWEOz750iTX1s3iIfL6zdJcSsQIdpRt9WiHcqqAIE0a0DCo3wNP7eJubodqLG/rwy7f7lxoKPfHscERfP2Eeg==",
+  "success": true,
+  "projectFilePath": "D:\\Khorev\\LR1\\DataProtectionLab1\\WinFormsApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Honor\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\5.0.9\\microsoft.netcore.app.runtime.win-x86.5.0.9.nupkg.sha512",
+    "C:\\Users\\Honor\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\5.0.9\\microsoft.windowsdesktop.app.runtime.win-x86.5.0.9.nupkg.sha512",
+    "C:\\Users\\Honor\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\5.0.9\\microsoft.aspnetcore.app.runtime.win-x86.5.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -463,71 +463,79 @@ namespace WinFormsApp1
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Панель ввода/установки парольной фразы шифрования.
-            
-            DialogResult AccessDR = new Access(this, !File.Exists(path)).ShowDialog();
-
-            string msg;
-            switch (AccessDR)
+            DialogResult VerifierDR = new Verifier().ShowDialog();
+            if (VerifierDR == DialogResult.Cancel)
             {
-                case DialogResult.Abort:
-                    msg = "Превышен лимит неверного ввода парольной фразы.";
-                    break;
-                case DialogResult.Cancel:
-                    msg = "Парольная фраза не была установлена";
-                    break;
-                default:
-                    msg = File.Exists(path) ? "Парольная фраза введена. В случае неверного ввода программа закончит работу." : "Парольная фраза установлена.";
-                    break;
-            }
-            MessageBox.Show(msg);
-
-
-            // Выход в случае неуспешной установки парольной фразы.
-            if (AccessDR != DialogResult.OK)
-            {
-                LogOutput("ОШИБКА: " + msg);
                 Terminate();
             }
             else
             {
+                // Панель ввода/установки парольной фразы шифрования.
 
-                GetUserData();
+                DialogResult AccessDR = new Access(this, !File.Exists(path)).ShowDialog();
 
-                if (!ContainsAdmin())
+                string msg;
+                switch (AccessDR)
                 {
-                    LogOutput("ОШИБКА: Не найден администратор, предполагается ошибка ввода парольной фразы шифрования"); 
-                    if (MessageBox.Show("Неверно введена парольная фраза.") == DialogResult.OK)
+                    case DialogResult.Abort:
+                        msg = "Превышен лимит неверного ввода парольной фразы.";
+                        break;
+                    case DialogResult.Cancel:
+                        msg = "Парольная фраза не была установлена";
+                        break;
+                    default:
+                        msg = File.Exists(path) ? "Парольная фраза введена. В случае неверного ввода программа закончит работу." : "Парольная фраза установлена.";
+                        break;
+                }
+                MessageBox.Show(msg);
+
+
+                // Выход в случае неуспешной установки парольной фразы.
+                if (AccessDR != DialogResult.OK)
+                {
+                    LogOutput("ОШИБКА: " + msg);
                     Terminate();
                 }
                 else
                 {
-                    // Открытие формы входа
-                    LoginForm loginForm = new LoginForm(this);
-                    DialogResult loginRes = loginForm.ShowDialog();
 
-                    // Вход успешен
-                    if (loginRes == DialogResult.OK)
+                    GetUserData();
+
+                    if (!ContainsAdmin())
                     {
-                        activeUser = user_map[loginForm.active_user_name];
-                        if (activeUser.Username == "admin")
-                        {
-                            AdminPanelButton.Enabled = true;
-                            AdminPanelButton.Visible = true;
-                        }
+                        LogOutput("ОШИБКА: Не найден администратор, предполагается ошибка ввода парольной фразы шифрования");
+                        if (MessageBox.Show("Неверно введена парольная фраза.") == DialogResult.OK)
+                            Terminate();
                     }
-                    // Отмена при установке пароля/трехкратная ошибка в пароле
-                    else if (loginRes == DialogResult.Abort)
-                    {
-                        LogOutput("Пользователь прервал вход или достигнуто три ошибки ввода пароля");
-                        Terminate();
-                    }
-                    // Отказ от входа 
                     else
                     {
-                        // Пароль мог быть установлен, сохраняем изменения
-                        LogOutput("Пользователь закрыл программу, не войдя в профиль");
-                        Close();
+                        // Открытие формы входа
+                        LoginForm loginForm = new LoginForm(this);
+                        DialogResult loginRes = loginForm.ShowDialog();
+
+                        // Вход успешен
+                        if (loginRes == DialogResult.OK)
+                        {
+                            activeUser = user_map[loginForm.active_user_name];
+                            if (activeUser.Username == "admin")
+                            {
+                                AdminPanelButton.Enabled = true;
+                                AdminPanelButton.Visible = true;
+                            }
+                        }
+                        // Отмена при установке пароля/трехкратная ошибка в пароле
+                        else if (loginRes == DialogResult.Abort)
+                        {
+                            LogOutput("Пользователь прервал вход или достигнуто три ошибки ввода пароля");
+                            Terminate();
+                        }
+                        // Отказ от входа 
+                        else
+                        {
+                            // Пароль мог быть установлен, сохраняем изменения
+                            LogOutput("Пользователь закрыл программу, не войдя в профиль");
+                            Close();
+                        }
                     }
                 }
             }

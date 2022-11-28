@@ -1,0 +1,5 @@
+D:\Khorev\LR1\DataProtectionLab1\bin\Release\net5.0-windows\publish\Data_Protection_Lab1.exe
+D:\Khorev\LR1\DataProtectionLab1\bin\Release\net5.0-windows\publish\Data_Protection_Lab1.dll
+D:\Khorev\LR1\DataProtectionLab1\bin\Release\net5.0-windows\publish\Data_Protection_Lab1.deps.json
+D:\Khorev\LR1\DataProtectionLab1\bin\Release\net5.0-windows\publish\Data_Protection_Lab1.runtimeconfig.json
+D:\Khorev\LR1\DataProtectionLab1\bin\Release\net5.0-windows\publish\Data_Protection_Lab1.pdb

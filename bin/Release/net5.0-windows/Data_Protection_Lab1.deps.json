@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "Data_Protection_Lab1/1.0.0": {
+        "runtime": {
+          "Data_Protection_Lab1.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Data_Protection_Lab1/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
