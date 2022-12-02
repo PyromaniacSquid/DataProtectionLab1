@@ -40,6 +40,7 @@ namespace WinFormsApp1
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +51,7 @@ namespace WinFormsApp1
             this.AdminPanelButton.Location = new System.Drawing.Point(48, 242);
             this.AdminPanelButton.Name = "AdminPanelButton";
             this.AdminPanelButton.Size = new System.Drawing.Size(177, 52);
-            this.AdminPanelButton.TabIndex = 3;
+            this.AdminPanelButton.TabIndex = 4;
             this.AdminPanelButton.Text = "Панель администратора";
             this.AdminPanelButton.UseVisualStyleBackColor = true;
             this.AdminPanelButton.Visible = false;
@@ -68,10 +69,10 @@ namespace WinFormsApp1
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(49, 112);
+            this.button2.Location = new System.Drawing.Point(49, 173);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(176, 52);
-            this.button2.TabIndex = 2;
+            this.button2.TabIndex = 3;
             this.button2.Text = "Завершить работу";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -101,7 +102,7 @@ namespace WinFormsApp1
             // сменитьПарольToolStripMenuItem
             // 
             this.сменитьПарольToolStripMenuItem.Name = "сменитьПарольToolStripMenuItem";
-            this.сменитьПарольToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.сменитьПарольToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.сменитьПарольToolStripMenuItem.Text = "Сменить пароль";
             this.сменитьПарольToolStripMenuItem.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -140,11 +141,22 @@ namespace WinFormsApp1
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(49, 105);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(177, 52);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Клавиатурный почерк";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 311);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -180,6 +192,7 @@ namespace WinFormsApp1
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem справкаToolStripMenuItem1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button3;
     }
 }
 

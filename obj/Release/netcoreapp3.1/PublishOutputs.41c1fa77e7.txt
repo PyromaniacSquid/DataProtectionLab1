@@ -1,0 +1,5 @@
+M:\7 semestr\Защита Данных\LR1\bin\Release\netcoreapp3.1\publish\Data_Protection_Lab1.exe
+M:\7 semestr\Защита Данных\LR1\bin\Release\netcoreapp3.1\publish\Data_Protection_Lab1.dll
+M:\7 semestr\Защита Данных\LR1\bin\Release\netcoreapp3.1\publish\Data_Protection_Lab1.deps.json
+M:\7 semestr\Защита Данных\LR1\bin\Release\netcoreapp3.1\publish\Data_Protection_Lab1.runtimeconfig.json
+M:\7 semestr\Защита Данных\LR1\bin\Release\netcoreapp3.1\publish\Data_Protection_Lab1.pdb

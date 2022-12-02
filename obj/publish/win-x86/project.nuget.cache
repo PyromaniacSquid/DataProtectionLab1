@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "vTHUJLbGNIDNNa1UWnwePNcZYBM/0aqchgV5qekjsAyQ6iQIbFb4OYVfV5LJkgRnlGzf6J3Hhh9FRC7sxXldXQ==",
+  "success": true,
+  "projectFilePath": "M:\\7 semestr\\Защита Данных\\LR1\\WinFormsApp1.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mrsta\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\3.1.29\\microsoft.netcore.app.runtime.win-x86.3.1.29.nupkg.sha512",
+    "C:\\Users\\mrsta\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\3.1.29\\microsoft.windowsdesktop.app.runtime.win-x86.3.1.29.nupkg.sha512",
+    "C:\\Users\\mrsta\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\3.1.29\\microsoft.aspnetcore.app.runtime.win-x86.3.1.29.nupkg.sha512",
+    "C:\\Users\\mrsta\\.nuget\\packages\\microsoft.netcore.app.host.win-x86\\3.1.29\\microsoft.netcore.app.host.win-x86.3.1.29.nupkg.sha512"
+  ],
+  "logs": []
+}

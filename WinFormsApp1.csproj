@@ -8,13 +8,13 @@
     <RootNamespace>Data_Protection_Lab1</RootNamespace>
     <StartupObject></StartupObject>
     <Description>
-      Лабораторная работа №3.
-      Программная реализация криптографических алгоритмов
-      Вариант №15: Шифрование перестановкой и гаммированием (последовательно)</Description>
+      Курсовая работа.
+      Программная реализация аутентификации пользователя по клавиатурному почерку.
+    </Description>
     <Copyright>Малахов Николай Васильевич</Copyright>
     <RepositoryUrl>https://github.com/PyromaniacSquid/DataProtectionLab1</RepositoryUrl>
     <Company>Учебная групппа А-05-19</Company>
-    <Product>Программа разграничения полномочий пользователей на основе парольной аутентификации</Product>
+    <Product>Курсовая работа по Защите Данных</Product>
   </PropertyGroup>
 
   <ItemGroup>

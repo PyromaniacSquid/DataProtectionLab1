@@ -39,6 +39,13 @@ namespace WinFormsApp1
             this.BlockedState = new System.Windows.Forms.CheckBox();
             this.PWRestrictionsState = new System.Windows.Forms.CheckBox();
             this.DeleteUserButton = new System.Windows.Forms.Button();
+            this.StagesTextBox = new System.Windows.Forms.TextBox();
+            this.ChecksTextBox = new System.Windows.Forms.TextBox();
+            this.LimitTextBox = new System.Windows.Forms.TextBox();
+            this.stagesLabel = new System.Windows.Forms.Label();
+            this.checksLabel = new System.Windows.Forms.Label();
+            this.limitLabel = new System.Windows.Forms.Label();
+            this.keyboardAuthCheck = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // CreateUserButton
@@ -136,20 +143,96 @@ namespace WinFormsApp1
             // 
             // DeleteUserButton
             // 
-            this.DeleteUserButton.Location = new System.Drawing.Point(90, 287);
+            this.DeleteUserButton.Location = new System.Drawing.Point(90, 434);
             this.DeleteUserButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DeleteUserButton.Name = "DeleteUserButton";
-            this.DeleteUserButton.Size = new System.Drawing.Size(182, 28);
+            this.DeleteUserButton.Size = new System.Drawing.Size(183, 32);
             this.DeleteUserButton.TabIndex = 9;
             this.DeleteUserButton.Text = "Удалить пользователя";
             this.DeleteUserButton.UseVisualStyleBackColor = true;
             this.DeleteUserButton.Click += new System.EventHandler(this.DeleteUserButton_Click);
             // 
+            // StagesTextBox
+            // 
+            this.StagesTextBox.Enabled = false;
+            this.StagesTextBox.Location = new System.Drawing.Point(254, 314);
+            this.StagesTextBox.Name = "StagesTextBox";
+            this.StagesTextBox.Size = new System.Drawing.Size(90, 23);
+            this.StagesTextBox.TabIndex = 10;
+            this.StagesTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StagesTextBox_KeyPress);
+            this.StagesTextBox.Leave += new System.EventHandler(this.StagesTextBox_TextChanged);
+            // 
+            // ChecksTextBox
+            // 
+            this.ChecksTextBox.Enabled = false;
+            this.ChecksTextBox.Location = new System.Drawing.Point(254, 358);
+            this.ChecksTextBox.Name = "ChecksTextBox";
+            this.ChecksTextBox.Size = new System.Drawing.Size(91, 23);
+            this.ChecksTextBox.TabIndex = 11;
+            this.ChecksTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ChecksTextBox_KeyPress);
+            this.ChecksTextBox.Leave += new System.EventHandler(this.ChecksTextBox_TextChanged);
+            // 
+            // LimitTextBox
+            // 
+            this.LimitTextBox.Enabled = false;
+            this.LimitTextBox.Location = new System.Drawing.Point(254, 397);
+            this.LimitTextBox.Name = "LimitTextBox";
+            this.LimitTextBox.Size = new System.Drawing.Size(91, 23);
+            this.LimitTextBox.TabIndex = 12;
+            this.LimitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox_KeyPress);
+            this.LimitTextBox.Leave += new System.EventHandler(this.LimitTextBox_TextChanged);
+            // 
+            // stagesLabel
+            // 
+            this.stagesLabel.AutoSize = true;
+            this.stagesLabel.Location = new System.Drawing.Point(32, 314);
+            this.stagesLabel.Name = "stagesLabel";
+            this.stagesLabel.Size = new System.Drawing.Size(123, 15);
+            this.stagesLabel.TabIndex = 13;
+            this.stagesLabel.Text = "Этапов тестирования";
+            // 
+            // checksLabel
+            // 
+            this.checksLabel.AutoSize = true;
+            this.checksLabel.Location = new System.Drawing.Point(32, 358);
+            this.checksLabel.Name = "checksLabel";
+            this.checksLabel.Size = new System.Drawing.Size(120, 15);
+            this.checksLabel.TabIndex = 14;
+            this.checksLabel.Text = "Проверок при входе";
+            // 
+            // limitLabel
+            // 
+            this.limitLabel.AutoSize = true;
+            this.limitLabel.Location = new System.Drawing.Point(32, 397);
+            this.limitLabel.Name = "limitLabel";
+            this.limitLabel.Size = new System.Drawing.Size(190, 15);
+            this.limitLabel.TabIndex = 15;
+            this.limitLabel.Text = "Допустимый порог непохожести";
+            // 
+            // keyboardAuthCheck
+            // 
+            this.keyboardAuthCheck.AutoSize = true;
+            this.keyboardAuthCheck.Location = new System.Drawing.Point(32, 278);
+            this.keyboardAuthCheck.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.keyboardAuthCheck.Name = "keyboardAuthCheck";
+            this.keyboardAuthCheck.Size = new System.Drawing.Size(214, 19);
+            this.keyboardAuthCheck.TabIndex = 16;
+            this.keyboardAuthCheck.Text = "Проверка клавиатурного почерка";
+            this.keyboardAuthCheck.UseVisualStyleBackColor = true;
+            this.keyboardAuthCheck.CheckedChanged += new System.EventHandler(this.keyboardAuthCheck_CheckedChanged);
+            // 
             // AdminPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 334);
+            this.ClientSize = new System.Drawing.Size(383, 477);
+            this.Controls.Add(this.keyboardAuthCheck);
+            this.Controls.Add(this.limitLabel);
+            this.Controls.Add(this.checksLabel);
+            this.Controls.Add(this.stagesLabel);
+            this.Controls.Add(this.LimitTextBox);
+            this.Controls.Add(this.ChecksTextBox);
+            this.Controls.Add(this.StagesTextBox);
             this.Controls.Add(this.DeleteUserButton);
             this.Controls.Add(this.PWRestrictionsState);
             this.Controls.Add(this.BlockedState);
@@ -184,5 +267,12 @@ namespace WinFormsApp1
         private System.Windows.Forms.CheckBox BlockedState;
         private System.Windows.Forms.CheckBox PWRestrictionsState;
         private System.Windows.Forms.Button DeleteUserButton;
+        private System.Windows.Forms.TextBox StagesTextBox;
+        private System.Windows.Forms.TextBox ChecksTextBox;
+        private System.Windows.Forms.TextBox LimitTextBox;
+        private System.Windows.Forms.Label stagesLabel;
+        private System.Windows.Forms.Label checksLabel;
+        private System.Windows.Forms.Label limitLabel;
+        private System.Windows.Forms.CheckBox keyboardAuthCheck;
     }
 }

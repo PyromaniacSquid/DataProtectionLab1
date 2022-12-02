@@ -86,11 +86,49 @@ namespace WinFormsApp1
                     }
                     else
                     {
-                        main.LogOutput("User " + username + " authorized successfully\n");
-                        MessageBox.Show("Добро пожаловать!");
-                        active_user_name = username;
-                        this.DialogResult = DialogResult.OK;
-                        Close();
+                        if (main.user_map[username].hasKeyboardAuthentication)
+                        {
+                            if (main.user_map[username].avgSpeed==0) {
+                                MessageBox.Show("Требуется пройти настройку аутентификации по клавиатурному почерку");
+                                KeyboardAuthTest kAuth = new KeyboardAuthTest(main, username, false);
+                                if (kAuth.ShowDialog() == DialogResult.Yes)
+                                {
+                                    main.LogOutput("User " + username + " authorized successfully\n");
+                                    MessageBox.Show("Добро пожаловать!");
+                                    active_user_name = username;
+                                    this.DialogResult = DialogResult.OK;
+                                    Close();
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Требуется пройти аутентификацию по клавиатурному почерку");
+                                KeyboardAuthTest kAuth = new KeyboardAuthTest(main, username, true);
+                                if (kAuth.ShowDialog() == DialogResult.Yes)
+                                {
+                                    main.LogOutput("User " + username + " authorized successfully\n");
+                                    MessageBox.Show("Добро пожаловать!");
+                                    active_user_name = username;
+                                    this.DialogResult = DialogResult.OK;
+                                    Close();
+                                }
+                                else
+                                {
+                                    if (MessageBox.Show("Попытка аутентификации провалена") == DialogResult.OK)
+                                    {
+                                        this.DialogResult = DialogResult.Abort;
+                                        Close();
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            main.LogOutput("User " + username + " authorized successfully\n");
+                            MessageBox.Show("Добро пожаловать!");
+                            active_user_name = username;
+                            this.DialogResult = DialogResult.OK;
+                            Close();
+                        }
                     }
                 }
                 // Ошибки входа

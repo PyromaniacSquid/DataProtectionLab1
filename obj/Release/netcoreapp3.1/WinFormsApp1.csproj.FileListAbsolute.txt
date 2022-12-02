@@ -19,3 +19,4 @@ M:\7 semestr\Защита Данных\LR1\obj\Release\netcoreapp3.1\Data_Protec
 M:\7 semestr\Защита Данных\LR1\obj\Release\netcoreapp3.1\Data_Protection_Lab1.pdb
 M:\7 semestr\Защита Данных\LR1\obj\Release\netcoreapp3.1\WinFormsApp1.genruntimeconfig.cache
 M:\7 semestr\Защита Данных\LR1\obj\Release\netcoreapp3.1\WinFormsApp1.csproj.AssemblyReference.cache
+M:\7 semestr\Защита Данных\LR1\obj\Release\netcoreapp3.1\WinFormsApp1.KeyboardAuthTest.resources

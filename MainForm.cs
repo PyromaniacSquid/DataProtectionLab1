@@ -22,12 +22,28 @@ namespace WinFormsApp1
             private string password;
             private bool blocked;
             private bool hasRestrictions;
+
+            //KR Workarounds
+            private bool hasKeyboardAuth;
+            private Dictionary<string, long> keyPressTime;
+            private double avgTypeSpeed;
+            private float avgtypeErrCount;
+            private int testsCount;
+            private int checksCount;
+            private double errLimit;
+            
             public User()
             {
                 username = "";
                 password = "";
                 blocked = false;
                 hasRestrictions = true;
+                hasKeyboardAuth = true;
+                keyPressTime = new Dictionary<string, long>();
+                avgTypeSpeed = 0;
+                avgtypeErrCount = 0;
+                errLimit = 0.1;
+
             }
             public User(string username, string password, bool blocked, bool hasRestrictions)
             {
@@ -36,6 +52,22 @@ namespace WinFormsApp1
                 this.blocked = blocked;
                 this.hasRestrictions = hasRestrictions;
             }
+            public User(string username, string password, bool blocked, bool hasRestrictions,
+                        bool hasKeyboardAuth, Dictionary<string, long> keyPressTime, double avgSpeed, float avgErrCount, int testCount, int checksCount,  double errLimit)
+            {
+                this.username = username;
+                this.password = password;
+                this.blocked = blocked;
+                this.hasRestrictions = hasRestrictions;
+                this.hasKeyboardAuth = hasKeyboardAuth;
+                this.keyPressTime = keyPressTime;
+                this.avgTypeSpeed = avgSpeed;
+                this.avgtypeErrCount = avgErrCount;
+                this.errLimit = errLimit;
+                this.checksCount = checksCount;
+                this.testsCount = testCount;
+            }
+
             public string Username
             {
                 get { return username; }
@@ -55,6 +87,41 @@ namespace WinFormsApp1
             {
                 get { return hasRestrictions; }
                 set { hasRestrictions = value; }
+            }
+            public bool hasKeyboardAuthentication
+            {
+                get { return hasKeyboardAuth; }
+                set { hasKeyboardAuth = value; }
+            }
+            public Dictionary<string, long> KeyTimeData
+            {
+                get { return keyPressTime; }
+                set { keyPressTime = value; }
+            }
+            public double avgSpeed
+            {
+                get { return avgTypeSpeed; }
+                set { avgTypeSpeed = value; }
+            }
+            public float avgErrCount
+            {
+                get { return avgtypeErrCount; }
+                set { avgtypeErrCount = value; }
+            }
+            public int testCount
+            {
+                get { return testsCount; }
+                set { testsCount = value; }
+            }
+            public int checkCount
+            {
+                get { return checksCount; }
+                set { checksCount = value; }
+            }
+            public double errLim
+            {
+                get { return errLimit; }
+                set { errLimit = value; }
             }
         }
         // Путь бинарного файла с пользовательскими данными
@@ -88,7 +155,7 @@ namespace WinFormsApp1
         private void SaveUserData()
         {
             LogOutput("Сохраняю изменения");
-            File.Delete(path);
+             File.Delete(path);
             FileStream user_fs = File.Create(path);
             BinaryWriter writer = new BinaryWriter(user_fs, Encoding.Unicode);
             foreach (KeyValuePair<string, User> user_pair in user_map)
@@ -98,6 +165,18 @@ namespace WinFormsApp1
                 writer.Write(cur_user.Password);
                 writer.Write(cur_user.isBlocked);
                 writer.Write(cur_user.hasPasswordRestrictions);
+
+                writer.Write(cur_user.hasKeyboardAuthentication);
+                foreach (KeyValuePair<string, long> key_pair in cur_user.KeyTimeData)
+                {
+                    writer.Write(key_pair.Key);
+                    writer.Write(key_pair.Value);
+                }
+                writer.Write(cur_user.avgSpeed);
+                writer.Write(cur_user.avgErrCount);
+                writer.Write(cur_user.testCount);
+                writer.Write(cur_user.checkCount);
+                writer.Write(cur_user.errLim);
             }
             LogOutput("Изменения сохранены");
             writer.Close();
@@ -218,9 +297,12 @@ namespace WinFormsApp1
         }
         
         // Добавление нового пользователя
-        public void AddUserData(string username, string password, bool blocked, bool hasRestrictions)
+        public void AddUserData(string username, string password, bool blocked, bool hasRestrictions, 
+                                bool hasKeyAuth, Dictionary<string, long> keyData, double avgTypeSpeed, float avgErrCount, 
+                                int testCount, int checksCount, double errLimit)
         {
-            user_map[username] = new User(username, password, blocked, hasRestrictions);
+            user_map[username] = new User(username, password, blocked, hasRestrictions,
+                                    hasKeyAuth, keyData, avgTypeSpeed, avgErrCount,testCount, checksCount, errLimit);
             LogOutput("Записал информацию о новом пользователе " + username);
         }
 
@@ -234,7 +316,14 @@ namespace WinFormsApp1
             {
                 // Первый запуск программы
                 user_fs = File.Create(path);
-                AddUserData("admin", "", false, false);
+                string letter = "abcdefghijklmnopqrstuvwxyzабвгдежзийклмнопрстуфхцчшщъыьэюя";
+
+                Dictionary<string, long> new_user_dict = new Dictionary<string, long>();
+                for (int i = 0; i < 58; i++)
+                {
+                    new_user_dict.Add(Char.ConvertFromUtf32(letter[i]), 0);
+                }
+                AddUserData("admin", "", false, false, true, new_user_dict, 0, 0, 12, 8, 0.25);
             }
             else
             {
@@ -252,6 +341,20 @@ namespace WinFormsApp1
                         new_user.Password = reader.ReadString();                        
                         new_user.isBlocked = reader.ReadBoolean();
                         new_user.hasPasswordRestrictions = reader.ReadBoolean();
+
+                        new_user.hasKeyboardAuthentication = reader.ReadBoolean();
+                        new_user.KeyTimeData = new Dictionary<string, long>();
+                        for (int i = 0; i < 58; i++)
+                        {
+                            string key = reader.ReadString();
+                            long value = reader.ReadInt64();
+                            new_user.KeyTimeData.Add(key, value);
+                        }
+                        new_user.avgSpeed = reader.ReadDouble();
+                        new_user.avgErrCount = reader.ReadSingle();
+                        new_user.testCount = reader.ReadInt32();
+                        new_user.checkCount = reader.ReadInt32();
+                        new_user.errLim = reader.ReadDouble();
                     }
                     catch (Exception e)
                     {
@@ -368,6 +471,22 @@ namespace WinFormsApp1
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (activeUser.hasKeyboardAuthentication)
+            {
+                KeyboardAuthTest kbrdAuthTest = new KeyboardAuthTest(this, activeUser.Username, false);
+                kbrdAuthTest.ShowDialog();
+            }
+            else
+            {
+                if (activeUser.Username == "admin")
+                    MessageBox.Show("Функция аутентификации по клавиатурному почерку для вас отключена. При желании, можете подключить её в панели администратора.");
+                else
+                    MessageBox.Show("Функция аутентификации по клавиатурному почерку для вас отключена. Обратитесь к администратору.");
+            }
         }
     }
 }
